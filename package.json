@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "babel": "^6.23.0",
+    "eslint": "^7.32.0",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
   },
@@ -17,4 +19,4 @@
   },
   "author": "",
   "license": "ISC"
-}
+}npm 
