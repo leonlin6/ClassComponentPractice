@@ -1,10 +1,33 @@
 const path = require('path');
 module.exports = {
-    entry: { 
-        index: './src/index.js' // 從哪裡開始打包
-    },
-    output: { 
-        filename: 'bundle.js', // 要打包成什麼
-        path: path.resolve('./build'), // 要打包在哪裡
-    }
+  entry: {
+    index: './src/index.js'
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve('./build')
+  },
+  module: {
+    rules: [
+      {
+        test: /.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env']
+          }
+        }
+      },
+      {       
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],       
+      },
+    ]
+  },
+  // ------ 加入以下內容 ------
+  devServer: {
+   contentBase: './build', // 本來打包完的檔案位置
+    port: 8080 // 預覽網頁要跑在哪個port
+  }
 };

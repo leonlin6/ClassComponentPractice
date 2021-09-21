@@ -1,56 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import faker from 'faker';
-import CommentDetail from './CommentDetail';
-import ApprovalCard from './ApprovalCard';
+import SeasonDisplay from './SeasonDisplay';
+import Spinner from './Spinner';
 
-// import MenuItem from './MenuItem';
-// // 引入新的Menu
-// import Menu from './Menu';
-// import InputForm from './InputForm';
+class AppFunction extends React.Component{
+  state  = {lattitude: null, errorMessage: ''};
 
-// const menuItemWording = [
-//   'Like的發問',
-//   'Like的回答',
-//   'Like的文章',
-//   'Like的留言'
-// ];
+  componentDidMount(){
+    window.navigator.geolocation.getCurrentPosition(
+      position =>  this.setState({lattitude: position.coords.latitude}),
+      err => this.setState({errorMessage: err.message})    
+    );
+  }
 
-// let menuItemArr = menuItemWording.map((wording) => <MenuItem text={wording}/>);
-// let mapTest = menuItemWording.map(
-//         (element, index, array) => {
-//             console.log("Element =" + element);
-//             console.log("Index =" + index);
-//             console.log("Array =" + array);
-//         }
-//     );
+  renderContent() {
+    if(this.state.errorMessage && !this.state.lattitude){
 
-const AppFunction = () => {
-  return (
-    <div className="ui container comments">
-      <ApprovalCard>
-        Are you sure you want to do this?
-      </ApprovalCard>
-      <ApprovalCard>
-        <CommentDetail author="Andy" avatar={faker.image.avatar()}/>
-      </ApprovalCard>
-      <ApprovalCard>
-        <CommentDetail author="Leon" avatar={faker.image.avatar()}/>
-      </ApprovalCard>
-      <ApprovalCard>
-        <CommentDetail author="Jacky" avatar={faker.image.avatar()}/>
-      </ApprovalCard>
+      return(
+        <div>Error: {this.state.errorMessage}</div>
+      );
+    }
+    if(!this.state.errorMessage && this.state.lattitude){
+        return <SeasonDisplay  lat={this.state.lattitude}/>
+    }
+    
+    return <Spinner />
+  }
 
-    </div>
-  );
-};
+  render() {
+    return(
+      <div className="border red">
+        {this.renderContent()}  
+      </div>
+    );
+  }
+}
 
 ReactDOM.render(
   <AppFunction/>
-  // <>
-  //     <Menu title={"Andy Chang的Like"}>{menuItemArr}</Menu>
-  //     <InputForm></InputForm>
-  // </>
   ,
   document.getElementById('root')
 );
